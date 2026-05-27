@@ -2,7 +2,7 @@
 
 This is a local macOS meeting recorder for Google Meet built with Electron and a native Swift capture helper.
 
-If you want the full project write-up, read the blog post here: `TODO: add blog URL`.
+If you want the full project write-up, read the blog post here: `https://www.recall.ai/blog/how-i-built-a-botless-meeting-recorder-from-scratch`.
 
 ## What it does
 
