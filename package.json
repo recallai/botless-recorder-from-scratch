@@ -1,0 +1,25 @@
+{
+  "name": "botless-notetaker",
+  "version": "0.1.0",
+  "description": "Local-first TypeScript meeting recorder, starting with Google Meet.",
+  "main": "dist/main/main.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.renderer.json && node scripts/copy-static.mjs && node scripts/build-native-helper.mjs",
+    "build:window-probe": "node scripts/build-native-window-probe.mjs",
+    "check": "tsc --noEmit -p tsconfig.json",
+    "start": "npm run build && electron ."
+  },
+  "keywords": [
+    "electron",
+    "google-meet",
+    "notetaker",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "electron": "^37.0.0",
+    "typescript": "^5.8.3"
+  }
+}

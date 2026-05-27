@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Botless Notetaker</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --panel: rgba(15, 23, 42, 0.9);
+        --text: #e5eefc;
+        --muted: #92a3bd;
+        --accent: #4ade80;
+        --warning: #fbbf24;
+        --error: #f87171;
+        --border: rgba(148, 163, 184, 0.2);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "SF Pro Display", "Helvetica Neue", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(74, 222, 128, 0.18), transparent 30%),
+          radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.2), transparent 35%),
+          linear-gradient(180deg, #020617, #0f172a);
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+
+      main {
+        width: min(920px, 100%);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 28px;
+        background: var(--panel);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 30px 80px rgba(2, 6, 23, 0.55);
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: 32px;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .status-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 28px 0 20px;
+      }
+
+      .pill {
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        background: rgba(148, 163, 184, 0.16);
+      }
+
+      .pill[data-state="recording"] {
+        background: rgba(74, 222, 128, 0.18);
+        color: var(--accent);
+      }
+
+      .pill[data-state="blocked"] {
+        background: rgba(251, 191, 36, 0.18);
+        color: var(--warning);
+      }
+
+      .pill[data-state="error"] {
+        background: rgba(248, 113, 113, 0.18);
+        color: var(--error);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .card {
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 16px;
+        background: rgba(15, 23, 42, 0.5);
+      }
+
+      .card.wide {
+        grid-column: 1 / -1;
+      }
+
+      .label {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+
+      .value {
+        font-size: 14px;
+        line-height: 1.5;
+        word-break: break-word;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      button {
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        background: rgba(30, 41, 59, 0.9);
+        color: var(--text);
+        border-radius: 999px;
+        padding: 10px 14px;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      button:hover {
+        border-color: rgba(96, 165, 250, 0.5);
+      }
+
+      .footnote {
+        margin-top: 20px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      @media (max-width: 720px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Botless Notetaker</h1>
+      <p>
+        This macOS-first baseline runs separately from Google Chrome, checks the OS
+        permission state, matches a Google Meet tab to a native macOS capture source,
+        and starts a native recorder helper for video, system/app audio, and optional microphone capture.
+      </p>
+
+      <div class="status-row">
+        <div id="status" class="pill" data-state="idle">IDLE</div>
+        <div id="detail">Starting detector</div>
+      </div>
+
+      <div class="grid">
+        <section class="card wide">
+          <div class="label">Permissions</div>
+          <div id="permissions" class="value">Checking macOS permissions</div>
+          <div class="actions">
+            <button id="refresh-permissions" type="button">Refresh</button>
+            <button id="open-screen-settings" type="button">Open Screen Settings</button>
+            <button id="open-automation-settings" type="button">Open Automation Settings</button>
+            <button id="request-microphone" type="button">Request Microphone</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="label">Capture Source</div>
+          <div id="source" class="value">Not selected</div>
+        </section>
+        <section class="card">
+          <div class="label">Audio Track</div>
+          <div id="audio" class="value">No active native recorder session</div>
+        </section>
+        <section class="card">
+          <div class="label">Native Audio</div>
+          <div id="audio-input" class="value">Mic capture is handled inside the native recorder</div>
+        </section>
+        <section class="card wide">
+          <div class="label">Output Directory</div>
+          <div id="output" class="value">No active session</div>
+        </section>
+      </div>
+
+      <p class="footnote">
+        Google Meet joined-state is still inferred from the external Chrome tab URL and
+        window matching. The recording pipeline itself now runs through a native macOS
+        helper so the app can move beyond Electron desktop media capture.
+      </p>
+    </main>
+
+    <script type="module" src="./renderer.js"></script>
+  </body>
+</html>
