@@ -2,7 +2,7 @@
 
 This is a local macOS meeting recorder for Google Meet built with Electron and a native Swift capture helper.
 
-If you want the full project write-up, read the blog post here: [https://www.recall.ai/blog/how-i-built-a-botless-meeting-recorder-from-scratch](https://www.recall.ai/blog/how-i-built-a-botless-meeting-recorder-from-scratch).
+If you want the full project write-up, read the blog post on how to [record meeting without bots](https://www.recall.ai/blog/how-i-built-a-botless-meeting-recorder-from-scratch).
 
 ## What it does
 
@@ -164,3 +164,6 @@ Type-check only:
 ```bash
 npm run check
 ```
+
+## Other desktop recording resources
+If you want to learn more about [how to access system audio](https://www.recall.ai/blog/how-to-access-to-system-audio) we've also written a blog on that with demos and if you're just interested in [macOS screen capture APIs](https://www.recall.ai/blog/macos-screencapture-api) there is a guide on all of the APIs to record on macOS. For those interested in Granola.ai, we've also put out a blog on open source [Granola.ai alternatives](https://www.recall.ai/blog/granola-ai-alternatives) and a tutorial on how to [build a meeting notetaker like granola](https://www.recall.ai/blog/how-to-build-a-desktop-recording-app). Finally, if you are interested in [how to build a desktop app](https://www.recall.ai/blog/how-to-build-a-desktop-recording-app) using Recall.ai we've written a tutorial on that and built an app that you can test out or fork.
