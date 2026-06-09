@@ -2,7 +2,7 @@
 
 This is a local macOS meeting recorder for Google Meet built with Electron and a native Swift capture helper.
 
-If you want the full project write-up, read the blog post here: `https://www.recall.ai/blog/how-i-built-a-botless-meeting-recorder-from-scratch`.
+If you want the full project write-up, read the blog post here: [https://www.recall.ai/blog/how-i-built-a-botless-meeting-recorder-from-scratch](https://www.recall.ai/blog/how-i-built-a-botless-meeting-recorder-from-scratch).
 
 ## What it does
 
@@ -10,7 +10,7 @@ If you want the full project write-up, read the blog post here: `https://www.rec
 - Records video through ScreenCaptureKit
 - Records system audio and microphone audio
 - Uses Google Meet captions for a live transcript
-- Switches between the main Meet window and the Meet PiP/miniplayer when needed
+- Switches between the main Meet window and the Meet Picture-In-Picture/miniplayer when needed
 - Merges segment recordings into one final `video.mov` and one final `audio.m4a`
 
 ## What you need
@@ -95,7 +95,7 @@ If that setting is off, transcript capture and some Google Meet automation paths
 3. Start this app.
 4. Wait for the app to detect the meeting.
 5. Keep using your computer normally.
-6. When you are done, leave the meeting or close the app.
+6. When you are done, leave the meeting or stop recording in the app.
 
 The app writes recordings to the `recordings/` folder.
 
@@ -106,7 +106,7 @@ Each completed recording session should contain:
 - `transcript.txt`
 - `transcript.json`
 
-During tab or PiP switches, the app may also create temporary segment files under:
+During tab or Picture-in-Picture (PiP) switches, the app may also create temporary segment files under:
 
 - `recordings/<session>/segments/`
 
@@ -115,10 +115,10 @@ Those are expected. On final stop, the app merges those segments into the one fi
 ## Important limitations
 
 - This project is macOS-first.
-- The main polished path is Google Meet in Google Chrome.
+- The main path is Google Meet in Google Chrome.
 - It depends on Chrome automation for transcript capture and some Meet-specific behaviors.
 - PiP/miniplayer switching works by changing capture surfaces, so the app records in segments internally and merges them afterward.
-- Zoom support exists in the codebase but is not the main path this repo was hardened around.
+- Zoom support was explored in the codebase but is not the main path this repo was hardened around.
 
 ## Troubleshooting
 
